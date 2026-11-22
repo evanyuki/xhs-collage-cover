@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1242, initial-scale=1">
+  <title>涂鸦大字报</title>
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    #cover-canvas {
+      position: relative;
+      isolation: isolate;
+      width: 1242px;
+      height: 1660px;
+      overflow: hidden;
+      background: var(--paper, #7c4fd9);
+      color: #fcfbfc;
+      font-family: NotoSC, NotoLatin, 'Microsoft YaHei', sans-serif;
+      font-weight: 800;
+    }
+    .edge-art {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    #poster-stack {
+      position: absolute;
+      inset: 13.4% 0 13.4%;
+      display: grid;
+      grid-auto-rows: 1fr;
+      justify-items: center;
+      align-items: center;
+    }
+    .poster-row {
+      width: max-content;
+      display: flex;
+      justify-content: center;
+      white-space: pre;
+      line-height: 1;
+      transform: translateX(var(--shift)) rotate(var(--tilt));
+    }
+    .poster-char {
+      display: inline-block;
+      letter-spacing: -.045em;
+      paint-order: stroke fill;
+      -webkit-text-stroke: var(--stroke) currentColor;
+      transform: translateY(var(--lift)) rotate(var(--turn)) scale(var(--stretch-x), var(--stretch-y));
+    }
+    .accent-word { color: #ffe435; }
+    #tag, #bottom-note {
+      position: absolute;
+      left: 50%;
+      margin: 0;
+      transform: translateX(-50%);
+      max-width: 88%;
+      text-align: center;
+      font-size: 34px;
+      line-height: 1.2;
+    }
+    #tag { top: 5%; }
+    #bottom-note { bottom: 3%; }
+    #stickers { position: absolute; inset: 0; pointer-events: none; }
+    .doodle-sticker { position: absolute; object-fit: contain; }
+  </style>
+</head>
+<body>
+  <main id="cover-canvas">
+    <img class="edge-art" src="../assets/poster/margin-doodles.png" alt="">
+    <div id="poster-stack"></div>
+    <div id="tag"></div>
+    <div id="bottom-note"></div>
+    <div id="stickers"></div>
+  </main>
+  <script src="shared.js"></script>
+  <script>
+    const paper = {
+      grape_purple: '#7c4fd9', pop_orange: '#f36f52', mint_teal: '#1aa798',
+      cobalt_blue: '#4168d9', berry_pink: '#d64784'
+    };
+    const rows = [
+      { size: 250, shift: 11, tilt: -1, width: 994, ink: .045, x: .96, y: 1.10, turns: [-7, 4, 6], lift: [-.024, -.034, .006] },
+      { size: 260, shift: 34, tilt: -2, width: 1016, ink: .011, x: .98, y: 1.13, turns: [-6, -3, 5, -2], lift: [-.008, .002, -.018, .009] },
+      { size: 237, shift: 2, tilt: -2, width: 902, ink: .009, x: .96, y: 1.14, turns: [-5, -4, -6, 2], lift: [.101, .066, .014, .031] },
+      { size: 253, shift: 54, tilt: -1.5, width: 966, ink: 0, x: .96, y: 1.11, turns: [-7, -4, 4, 5], lift: [-.024, -.002, -.024, -.054] },
+      { size: 234, shift: 9, tilt: -1, width: 1000, ink: .012, x: .96, y: 1.10, turns: [-5, 3, -2], lift: [-.02, .02, 0] }
+    ];
+
+    window.injectData = function injectData(data) {
+      const lines = data.lines;
+      if (!Array.isArray(lines) || !lines.length || lines.length > 5 ||
+          lines.some(line => typeof line !== 'string' || !line.trim())) {
+        throw new Error('doodle-poster 的 lines 需要 1 至 5 行非空文案');
+      }
+      const keywords = data.highlight_words ?? [];
+      if (!Array.isArray(keywords) || keywords.some(word => typeof word !== 'string' || !word)) {
+        throw new Error('highlight_words 需要非空字符串组成的数组');
+      }
+      document.documentElement.style.setProperty('--paper', paper[data.theme_color] || paper.grape_purple);
+      setText('tag', data.tag);
+      setText('bottom-note', data.bottom_note);
+      const stack = document.getElementById('poster-stack');
+      stack.replaceChildren();
+      lines.forEach((line, index) => {
+        const style = rows[index];
+        const row = document.createElement('div');
+        row.className = 'poster-row';
+        row.style.setProperty('--shift', style.shift + 'px');
+        row.style.setProperty('--tilt', style.tilt + 'deg');
+        row.style.setProperty('--stroke', style.ink + 'em');
+        row.style.setProperty('--stretch-x', style.x);
+        row.style.setProperty('--stretch-y', style.y);
+        row.style.fontSize = Math.min(style.size, 1010 / lines.length) + 'px';
+        let offset = 0;
+        for (const ch of line) {
+          const glyph = document.createElement('span');
+          glyph.className = 'poster-char';
+          glyph.textContent = ch;
+          const position = row.childElementCount % style.turns.length;
+          glyph.style.setProperty('--turn', style.turns[position] + 'deg');
+          glyph.style.setProperty('--lift', style.lift[position] + 'em');
+          if (keywords.some(word => {
+            const start = line.lastIndexOf(word, offset);
+            return start >= 0 && offset < start + word.length;
+          })) glyph.classList.add('accent-word');
+          row.appendChild(glyph);
+          offset += ch.length;
+        }
+        stack.appendChild(row);
+      });
+      setStickers('stickers', data.assets?.stickers, {
+        className: 'doodle-sticker sticker-auto-cutout', top: '20%', left: '75%', size: 165
+      });
+    };
+
+    window.finalizeLayout = function finalizeLayout() {
+      document.querySelectorAll('.poster-row').forEach((row, index) => {
+        fitText(row, rows[index].width, parseFloat(row.style.fontSize), 64);
+      });
+    };
+  </script>
+</body>
+</html>
