@@ -1,0 +1,19 @@
+{
+  "name": "xhs-collage-cover",
+  "version": "1.0.0",
+  "description": "使用本机 Chromium 渲染小红书封面和知识清单套图，支持手帐创作稿定稿和离线重绘。",
+  "main": "scripts/render.js",
+  "scripts": {
+    "check-browser": "node scripts/render.js --check-browser",
+    "render": "node scripts/render.js",
+    "render:paper-notes": "node scripts/render.js examples/paper-notes.json output/paper-notes.png",
+    "render:sticker-journal": "node scripts/render.js",
+    "render:doodle-poster": "node scripts/render.js examples/doodle-poster.json output/doodle-poster.png",
+    "render:neon-cards": "node scripts/render.js examples/neon-cards.json output/neon-cards",
+    "render:reference-field": "node scripts/render.js examples/reference-field.json output/reference-field",
+    "render:all": "npm run render:paper-notes && npm run render:sticker-journal && npm run render:doodle-poster && npm run render:neon-cards"
+  },
+  "dependencies": {
+    "playwright-core": "^1.50.0"
+  }
+}
