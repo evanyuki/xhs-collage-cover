@@ -1,0 +1,26 @@
+{
+  "kind": "cover-source",
+  "schemaVersion": 1,
+  "template": "sticker-journal",
+  "analysis": {
+    "input": { "type": "text", "text": "挑一条街，边走边记。" },
+    "evidence": [{ "where": "原句", "observation": "行程围绕一条街展开", "decision": "把观察拆成两个动作" }],
+    "angle": "散步时如何做街头笔记"
+  },
+  "visualReference": {
+    "path": "../output/note_cover.png",
+    "composition": "portrait",
+    "requiredSlots": ["title", "hero"],
+    "observations": ["双行标题在上，竖幅人物占据左侧"]
+  },
+  "content": {
+    "title": "用两步写一页散步笔记",
+    "body": "挑一条街，先记下出发时看见的招牌。走到街尾，再写一句路上听见的话。",
+    "cover": {
+      "main_title_line1": "散步笔记",
+      "main_title_line2": "从一条街开始",
+      "checklist": ["记下招牌", "留一句街边听闻"]
+    }
+  },
+  "assets": { "main_sticker": "assets/travel/traveler.png" }
+}

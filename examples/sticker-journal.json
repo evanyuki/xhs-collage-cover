@@ -1,0 +1,72 @@
+{
+  "template": "sticker-journal",
+  "tag": "小红书",
+  "main_title_line1": "我在厦门",
+  "main_title_line2": "压过的马路",
+  "title_en_deco": "Xiamen",
+  "title_sub": "厦门真的会让人\n想一去再去！",
+  "side_note_title": "鼓浪屿",
+  "side_note_sub": "厦门大学\n沙坡尾\n……",
+  "side_note_bubble": "厦门真美好！",
+  "side_note_tip": "面朝大海，春暖花开~",
+  "checklist": [
+    "海岛漫步",
+    "骑行环岛路",
+    "寻味地道小吃"
+  ],
+  "assets": {
+    "main_sticker": "assets/travel/traveler.png",
+    "stickers": [
+      {
+        "role": "scene",
+        "path": "assets/travel/lighthouse.png",
+        "left": "59.5%",
+        "top": "43.3%",
+        "size": 435,
+        "rotate": "-8deg"
+      },
+      {
+        "path": "assets/travel/palm.png",
+        "left": "1.1%",
+        "top": "57.8%",
+        "size": 180,
+        "rotate": "-10deg"
+      },
+      {
+        "path": "assets/travel/flower.png",
+        "left": "56.6%",
+        "top": "41.6%",
+        "size": 111,
+        "rotate": "9deg"
+      },
+      {
+        "path": "assets/travel/camera.png",
+        "left": "18.7%",
+        "top": "86.8%",
+        "size": 166,
+        "rotate": "-12deg"
+      },
+      {
+        "path": "assets/travel/heart.png",
+        "left": "44.2%",
+        "top": "85.6%",
+        "size": 135,
+        "rotate": "-5deg"
+      },
+      {
+        "path": "assets/travel/wave.png",
+        "left": "79.4%",
+        "top": "73.2%",
+        "size": 170,
+        "rotate": "-8deg"
+      },
+      {
+        "path": "assets/travel/ferry.png",
+        "left": "59.1%",
+        "top": "89.2%",
+        "size": 278,
+        "rotate": "1deg"
+      }
+    ]
+  }
+}

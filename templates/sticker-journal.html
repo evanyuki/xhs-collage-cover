@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1242, initial-scale=1">
+  <title>贴纸手帐</title>
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <style>
+    :root {
+      --paper: #f6f4ee;
+      --ink: #151713;
+      --sun: #f3d03c;
+      --sky: #78afe2;
+      --mint: #7b9f54;
+      --paint-scan: linear-gradient(#fff, #fff);
+      --ragged: polygon(1% 2%, 6% 1%, 10% 2%, 16% 0, 22% 1%, 28% 0, 34% 2%, 42% 1%, 51% 2%, 57% 0, 63% 2%, 71% 1%, 79% 2%, 85% 0, 92% 1%, 99% 0, 100% 7%, 99% 14%, 100% 24%, 99% 36%, 100% 43%, 99% 58%, 100% 71%, 99% 82%, 100% 93%, 98% 98%, 92% 99%, 86% 98%, 78% 100%, 70% 99%, 64% 100%, 55% 98%, 47% 100%, 39% 99%, 31% 100%, 23% 98%, 16% 99%, 9% 98%, 1% 99%, 0 94%, 1% 86%, 0 77%, 1% 67%, 0 60%, 1% 51%, 0 42%, 1% 33%, 0 25%, 1% 17%, 0 10%);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body, #cover-canvas { width: 1242px; height: 1660px; overflow: hidden; }
+    body { color: var(--ink); font-family: WenKai, sans-serif; font-weight: 400; font-synthesis: none; -webkit-font-smoothing: antialiased; }
+    #cover-canvas { position: relative; isolation: isolate; background: var(--paper); }
+    .paper-grain { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 20; pointer-events: none; opacity: .075; mix-blend-mode: multiply; }
+    .top-bar { position: absolute; top: 57px; right: 63px; z-index: 14; }
+    #capsule-tag {
+      width: max-content; border-radius: 33px; background: #ed3543; padding: 4px 16px 7px;
+      color: #fffefa; font: 400 27px/1.2 WenKai, sans-serif; letter-spacing: -1px;
+    }
+    .title-zone {
+      position: absolute; left: 107px; top: 112px; width: 825px; z-index: 7;
+      display: flex; flex-direction: column; align-items: flex-start;
+    }
+    .brush-row { width: max-content; position: relative; }
+    .brush-row-1 { transform: rotate(-2deg); }
+    .brush-row-2 { margin: 5px 0 0 -8px; transform: rotate(-1.8deg); }
+    .brush-row-2::before, .brush-row-2::after {
+      content: ""; position: absolute; width: 16px; height: 74px; top: 14px; left: -11px;
+      border: solid var(--ink); border-width: 0 0 0 5px; transform: rotate(12deg); border-radius: 80% 0 0 30%;
+    }
+    .brush-row-2::after { top: 52px; left: auto; right: -16px; height: 45px; transform: rotate(174deg); }
+    .brush-pill {
+      width: max-content; position: relative; padding: 14px 30px 17px; isolation: isolate;
+    }
+    .brush-pill::before {
+      content: ""; position: absolute; inset: -6px -6px; z-index: -1;
+      background-color: var(--sun);
+      background-image: linear-gradient(96deg, #fff0 16%, #fff2 16.5%, #fff0 30%, #7749000c 30.5%, #fff0 46%, #fff2 46.5%, #fff0 61%, #9452000d 62%, #fff0 78%, #fff2 78.5%, #fff0 98%);
+      mask: var(--paint-scan) center / 100% 100% no-repeat;
+    }
+    .brush-row-2 .brush-pill::before { background-color: var(--sky); transform: rotate(180deg); }
+    .brush-pill::after {
+      content: ""; position: absolute; inset: -6px; z-index: -1; pointer-events: none;
+      background: #b6b2a7; filter: url(#paint-grain); opacity: .26; mix-blend-mode: multiply;
+      mask: var(--paint-scan) center / 100% 100% no-repeat;
+    }
+    .brush-row-2 .brush-pill::after { transform: rotate(180deg); }
+    .title-text {
+      position: relative; left: 10px; top: 9px; display: block; width: max-content; white-space: pre; letter-spacing: 5px;
+      font-family: WenKai, sans-serif; font-weight: 400; line-height: 1.06;
+      color: #131410;
+      filter: url(#ink-edge);
+    }
+    #title-line1 { font-size: 185px; }
+    #title-line2 { font-size: 146px; letter-spacing: 6px; }
+    .title-text > span { display: inline-block; }
+    .title-text > span:nth-child(4n + 1) { transform: rotate(-2deg) scale(1.035); }
+    .title-text > span:nth-child(4n + 2) { transform: rotate(1.5deg); }
+    .title-text > span:nth-child(4n) { transform: translateY(.028em) rotate(2deg); }
+    #title-en-deco {
+      position: relative; width: max-content; margin: -14px 0 0 325px;
+      font: 700 91px/.85 Caveat, WenKai, sans-serif; letter-spacing: .6px;
+      transform: rotate(-9deg) scaleX(1.17); transform-origin: left center; color: var(--mint);
+    }
+    #title-en-deco::after {
+      content: ""; position: absolute; left: -8px; right: -14px; bottom: -5px; height: 5px;
+      background: currentColor; border-radius: 100% 20% 100% 20%; transform: rotate(-2deg);
+    }
+    .main-sticker-wrap { position: absolute; left: 112px; top: 571px; width: 416px; height: 956px; z-index: 5; }
+    #main-sticker { width: 100%; height: 100%; object-fit: contain; }
+    .sticker-effect { filter: drop-shadow(3px 0 0 white) drop-shadow(-3px 0 0 white) drop-shadow(0 3px 0 white) drop-shadow(0 -3px 0 white) drop-shadow(1px 4px 2px #32261a24); }
+    #hero-blob {
+      position: absolute; left: 49px; top: 636px; width: 502px; height: 647px; z-index: 1;
+      background: var(--sky) var(--paper-scan, none) 48% 50% / cover; background-blend-mode: multiply;
+      border-radius: 45% 55% 48% 52% / 49% 51% 49% 51%; transform: rotate(-13deg);
+    }
+    #hero-blob::before, #hero-blob::after {
+      content: ""; position: absolute; top: 31%; left: 11%; width: 35px; height: 18px;
+      border-radius: 55% 75% 0 0; border-top: 6px solid #fffff7; transform: rotate(-18deg);
+    }
+    #hero-blob::after { width: 29px; margin-left: 28px; margin-top: -6px; transform: rotate(16deg); }
+    .itinerary-ink { position: absolute; left: 70px; bottom: 44px; width: 602px; height: 160px; pointer-events: none; z-index: 3; }
+    #cover-canvas:not([data-composition="portrait"]) .itinerary-ink { display: none; }
+    #absolute-stickers-container { display: contents; }
+    .floating-sticker { position: absolute; object-fit: contain; z-index: 13; pointer-events: none; }
+    .floating-sticker[data-role="scene"] { z-index: 4; }
+    .inspect-cover .floating-sticker { pointer-events: auto; }
+    .paper-piece { isolation: isolate; }
+    .paper-piece::before {
+      content: ""; position: absolute; inset: 0; z-index: -1; background-color: var(--sheet-color, #fffefa);
+      background-image: var(--paper-scan, none); background-size: 100% 100%; background-blend-mode: multiply; clip-path: var(--ragged);
+    }
+    #tip-text, #bubble-text {
+      position: absolute; width: max-content; max-width: 420px; z-index: 9;
+      font-weight: 400; filter: drop-shadow(-5px 6px 0 #fffef8) drop-shadow(-3px 6px 2px #211d1529);
+    }
+    #tip-text {
+      --sheet-color: var(--sky); top: 569px; right: 131px; padding: 16px 22px 21px;
+      font-size: 28px; line-height: 1.2; transform: rotate(7deg);
+    }
+    #tip-text::after { content: ""; position: absolute; left: 31px; bottom: -17px; width: 50px; height: 22px; background: var(--sheet-color); clip-path: polygon(32% 0, 100% 0, 0 100%); }
+    #bubble-text {
+      --sheet-color: var(--sun); top: 661px; right: 100px; padding: 8px 16px 9px;
+      font-size: 26px; line-height: 1.2; transform: rotate(-5deg);
+    }
+    #side-note-card {
+      --sheet-color: var(--sun); position: absolute; top: 805px; left: 547px; width: 196px; z-index: 7;
+      padding: 38px 14px 27px 20px; transform: rotate(-6.5deg);
+    }
+    #side-note-card::after {
+      content: ""; position: absolute; width: 54%; left: 12%; top: -13px; height: 19px;
+      border: 4px solid #20231b; border-bottom: 0; border-radius: 4% 5% 0 0; transform: rotate(-2deg);
+    }
+    .note-header { display: flex; align-items: baseline; gap: 10px; }
+    .pin {
+      display: inline-block; width: 17px; height: 20px; flex: none; position: relative;
+      border-radius: 80% 80% 80% 8%; background: #2d3326; transform: rotate(-45deg);
+    }
+    .pin::after { content: ""; position: absolute; width: 6px; height: 6px; top: 5px; left: 6px; background: var(--sun); border-radius: 50%; }
+    #side-note-title, #side-note-sub { font-size: 30px; line-height: 1.52; white-space: pre-line; }
+    #side-note-sub { padding-left: 24px; }
+    .checklist-card {
+      position: absolute; top: 1136px; left: 575px; width: 396px; z-index: 8;
+      padding: 42px 21px 45px 55px; transform: rotate(-3.5deg);
+      filter: drop-shadow(1px 8px 3px #32261a3d);
+    }
+    .paper-star { position: absolute; right: 27px; top: 34px; width: 54px; height: 52px; pointer-events: none; }
+    #checklist { list-style: none; display: grid; gap: 17px; }
+    .checklist-item { display: flex; align-items: baseline; gap: 13px; font-size: 31px; line-height: 1.35; }
+    .check-icon {
+      position: relative; flex: none; width: 25px; height: 27px; border: 3px solid var(--ink);
+      border-radius: 6% 2% 5% 2%; transform: rotate(2deg) translateY(2px);
+    }
+    .check-icon::after { content: ""; position: absolute; left: 6px; top: -6px; width: 8px; height: 20px; border: solid var(--ink); border-width: 0 4px 4px 0; transform: rotate(31deg); }
+    .check-text { position: relative; }
+    .check-text::after { content: ""; position: absolute; height: 7px; left: 0; right: -4px; bottom: -3px; border-radius: 40% 85% 50% 40%; background: var(--sky); clip-path: polygon(0 35%,20% 0,40% 43%,60% 7%,78% 30%,100% 8%,98% 70%,65% 100%,38% 83%,13% 100%,1% 76%); }
+    .checklist-item:nth-child(3n + 2) .check-text::after { background: var(--sun); }
+    .checklist-item:nth-child(3n) .check-text::after { background: var(--mint); }
+    #bottom-desc-box {
+      --sheet-color: #bddeeb; position: absolute; top: 1428px; right: -34px; width: 457px; min-height: 260px;
+      z-index: 6; padding: 54px 48px 46px 127px; transform: rotate(-4deg);
+      filter: drop-shadow(-3px -2px 2px #30281922);
+    }
+    #bottom-desc { position: relative; width: fit-content; font-size: 32px; line-height: 1.4; white-space: pre-line; }
+    #bottom-desc::after { content: ""; position: absolute; height: 5px; bottom: -7px; left: 0; right: -7px; transform: rotate(-2deg); border-radius: 70% 20%; background: var(--mint); }
+    #bottom-desc-box .pin { position: absolute; top: 58px; left: 75px; width: 29px; height: 35px; background: var(--mint); }
+    #bottom-desc-box .pin::after { width: 12px; height: 12px; left: 9px; top: 8px; background: #d1e7eb; }
+    .flourish, .trail-end { position: absolute; z-index: 12; pointer-events: none; background: var(--flourish, none) center/contain no-repeat; }
+    .flourish { left: 700px; top: 722px; width: 110px; height: 100px; }
+    .trail-end { left: 565px; top: 1450px; width: 100px; height: 115px; background-image: var(--trail-end); }
+    .header-marks { position: absolute; top: -32px; right: -214px; width: 232px; height: 244px; pointer-events: none; }
+  </style>
+  <style id="layout-slots"></style>
+</head>
+<body>
+  <div id="cover-canvas">
+    <svg class="paper-grain" aria-hidden="true" viewBox="0 0 1242 1660">
+      <defs>
+        <filter id="paper-grain"><feTurbulence type="fractalNoise" baseFrequency=".57" numOctaves="3" stitchTiles="stitch"/></filter>
+        <filter id="paint-grain"><feTurbulence type="fractalNoise" baseFrequency=".14 .38" numOctaves="3"/><feColorMatrix type="saturate" values="0"/></filter>
+        <filter id="ink-edge" x="-4%" y="-4%" width="108%" height="108%"><feTurbulence type="fractalNoise" baseFrequency=".28" numOctaves="2" result="fibers"/><feDisplacementMap in="SourceGraphic" in2="fibers" scale="2.7" xChannelSelector="R" yChannelSelector="G"/></filter>
+      </defs>
+      <rect width="1242" height="1660" filter="url(#paper-grain)"/>
+    </svg>
+    <div class="top-bar"><span id="capsule-tag"></span></div>
+    <div class="title-zone">
+      <div class="brush-row brush-row-1"><div class="brush-pill"><span class="title-text" id="title-line1"></span></div></div>
+      <div class="brush-row brush-row-2"><div class="brush-pill"><span class="title-text" id="title-line2"></span></div></div>
+      <span id="title-en-deco"></span>
+      <svg class="header-marks" aria-hidden="true" viewBox="0 0 232 244" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <g stroke="#edcc48" stroke-width="8"><path d="M9 49Q17 24 18 8M41 64L70 27M58 90L107 78"/></g>
+        <path d="M102 231Q77 231 84 201Q94 168 128 177Q144 149 174 170Q193 166 202 188Q231 187 221 216Q214 232 189 227Q169 254 147 237Q117 253 102 231Z" stroke="#71a8d6" stroke-width="8"/>
+      </svg>
+    </div>
+    <div id="hero-blob"></div>
+    <div class="main-sticker-wrap"><img id="main-sticker" class="sticker-effect" alt="主图"></div>
+    <div id="tip-text" class="paper-piece"></div>
+    <div id="bubble-text" class="paper-piece"></div>
+    <div id="side-note-card" class="paper-piece">
+      <div class="note-header"><span class="pin" aria-hidden="true"></span><span id="side-note-title"></span></div>
+      <p id="side-note-sub"></p>
+    </div>
+    <div class="checklist-card paper-piece">
+      <svg class="paper-star" aria-hidden="true" viewBox="0 0 60 55" fill="none" stroke="#eac348" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="m19 8 6 12 14-2-9 11 5 13-13-7-12 9 1-15L1 21l14-1z M47 8l5-5m0 13 6-3"/></svg>
+      <ul id="checklist"></ul>
+    </div>
+    <div id="bottom-desc-box" class="paper-piece"><span class="pin" aria-hidden="true"></span><p id="bottom-desc"></p></div>
+    <svg class="itinerary-ink" aria-hidden="true" viewBox="0 0 602 160" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 70q24-5 33-33-1 27 28 36-28-1-42 29 3-23-19-32Z" stroke="#eacb48" stroke-width="6"/>
+      <path d="M166 50q21-34 51-16m102 46c48-21 71 28 112 46 32 14 72-1 102-33" stroke="#1b2119" stroke-width="6" stroke-dasharray="17 14"/>
+    </svg>
+    <div class="flourish" aria-hidden="true"></div><div class="trail-end" aria-hidden="true"></div>
+    <div id="absolute-stickers-container"></div>
+  </div>
+  <script src="shared.js"></script>
+  <script>
+
+    const SLOT_SELECTORS = {
+      title: '.title-zone', hero: '.main-sticker-wrap', blob: '#hero-blob',
+      note: '#side-note-card', checklist: '.checklist-card', footer: '#bottom-desc-box',
+      tip: '#tip-text', bubble: '#bubble-text', tag: '.top-bar',
+      scene: '.floating-sticker[data-role="scene"]', flourish: '.flourish', trailEnd: '.trail-end'
+    };
+    const TEXT_SELECTORS = ['#title-line1','#title-line2','#title-en-deco','#capsule-tag',
+      '#tip-text','#bubble-text','#side-note-title','#side-note-sub','.check-text','#bottom-desc'];
+    const TEXTURES = {brush:'--paint-scan', paper:'--paper-scan', flourish:'--flourish', trailEnd:'--trail-end'};
+    const THEMES = {
+      yellow:['#f3d03c','#78afe2','#7b9f54'], green:['#aacf74','#ead36d','#4c916d'],
+      pink:['#f7a5bd','#a8c9e3','#929a60'], blue:['#87b9e0','#b6a7db','#548a68'],
+      orange:['#f5af70','#91ccc5','#688b6d']
+    };
+
+    function planJournal(composition) {
+      if (composition === 'landscape') {
+        return {
+          hero:{x:68,y:690,width:1090,height:420}, blob:{x:134,y:696,width:933,height:384,rotate:-3},
+          note:{x:83,y:1157,width:245}, checklist:{x:388,y:1140,width:411},
+          scene:{x:853,y:1111,width:290,height:288}
+        };
+      }
+      if (composition === 'text') {
+        return {
+          note:{x:138,y:797,width:311}, checklist:{x:528,y:984,width:512},
+          scene:{x:109,y:1073,width:363,height:353}
+        };
+      }
+      return {};
+    }
+
+    function applySlots(data, composition) {
+      const design = data.design || {};
+      const hidden = new Set(design.hidden || []);
+      if (!data.assets?.main_sticker) hidden.add('hero');
+      if (hidden.has('hero')) hidden.add('blob');
+      if (!data.side_note_title && !data.side_note_sub) hidden.add('note');
+      if (!data.checklist?.length) hidden.add('checklist');
+      if (!data.tag) hidden.add('tag');
+      if (!data.title_sub) hidden.add('footer');
+      if (!design.textures?.flourish) hidden.add('flourish');
+      if (!design.textures?.trailEnd) hidden.add('trailEnd');
+      const defaults = planJournal(composition);
+      const rules = [];
+      for (const [name, selector] of Object.entries(SLOT_SELECTORS)) {
+        const css = [];
+        if (hidden.has(name)) css.push('display:none!important');
+        const slot = {...defaults[name], ...design.slots?.[name]};
+        for (const [key, property] of [['x','left'], ['y','top'], ['width','width'], ['height','height']]) {
+          if (!Number.isFinite(slot[key])) continue;
+          css.push(property + ':' + slot[key] + 'px!important');
+          if (key === 'x') css.push('right:auto!important');
+          if (key === 'y') css.push('bottom:auto!important');
+        }
+        if (Number.isFinite(slot.rotate)) css.push('transform:rotate(' + slot.rotate + 'deg)!important');
+        if (Number.isInteger(slot.z)) css.push('z-index:' + slot.z + '!important');
+        if (css.length) rules.push(selector + '{' + css.join(';') + '}');
+      }
+      document.getElementById('layout-slots').textContent = rules.join('\n');
+    }
+
+    function bounds(rect) {
+      return {x:rect.x, y:rect.y, width:rect.width, height:rect.height};
+    }
+
+    // Convert between a point on the cropped artwork and the rotated page element.
+    function imageSpace(img) {
+      let transform = new DOMMatrix();
+      for (let el = img; el; el = el.parentElement) {
+        const local = getComputedStyle(el).transform;
+        if (local !== 'none') transform = new DOMMatrix(local).multiply(transform);
+      }
+      transform.e = 0;
+      transform.f = 0;
+      const box = img.getBoundingClientRect();
+      const scale = Math.min(img.clientWidth / img.naturalWidth, img.clientHeight / img.naturalHeight);
+      return {
+        centerX: box.x + box.width / 2, centerY: box.y + box.height / 2,
+        width: img.naturalWidth * scale, height: img.naturalHeight * scale, transform
+      };
+    }
+
+    // Ignore transparent margins when checking foreground sticker collisions.
+    function stickerInkAt(img, x, y, masks) {
+      if (!img.naturalWidth || !img.naturalHeight) return false;
+      if (!masks.has(img)) {
+        const tile = document.createElement('canvas');
+        tile.width = 80;
+        tile.height = 80;
+        const ctx = tile.getContext('2d');
+        ctx.drawImage(img, 0, 0, 80, 80);
+        masks.set(img, {pixels:ctx.getImageData(0, 0, 80, 80).data, space:imageSpace(img)});
+      }
+      const {space, pixels} = masks.get(img);
+      const local = new DOMPoint(x - space.centerX, y - space.centerY).matrixTransform(space.transform.inverse());
+      const u = Math.floor(80 * (0.5 + local.x / space.width));
+      const v = Math.floor(80 * (0.5 + local.y / space.height));
+      return u >= 0 && u < 80 && v >= 0 && v < 80 && pixels[(v * 80 + u) * 4 + 3] >= 160;
+    }
+
+    // Check printed text rather than a paper rectangle. Papers may overlap on purpose.
+    function inspectComposition(focus) {
+      const warnings = new Set();
+      const canvas = document.getElementById('cover-canvas').getBoundingClientRect();
+      const masks = new Map();
+      const copy = TEXT_SELECTORS.join(',');
+      function covered(el, x, y) {
+        const hits = document.elementsFromPoint(x, y);
+        const own = hits.indexOf(el);
+        if (own < 1) return false;
+        return hits.slice(0, own).some(hit => {
+          if (hit instanceof HTMLImageElement) return stickerInkAt(hit, x, y, masks);
+          if (hit.matches(copy)) return true;
+          const card = hit.closest('#side-note-card,.checklist-card,#bottom-desc-box');
+          if (!card || card.contains(el)) return false;
+          const box = card.getBoundingClientRect();
+          // Irregular torn edges are intentionally allowed to touch a neighbour.
+          return x > box.left + 16 && x < box.right - 16 && y > box.top + 16 && y < box.bottom - 16;
+        });
+      }
+      for (const el of document.querySelectorAll(copy)) {
+        if (!el.checkVisibility() || !el.textContent.trim()) continue;
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        const lines = [...range.getClientRects()].filter(r => r.width > 0 && r.height > 0);
+        const text = el.textContent.trim();
+        for (const line of lines) {
+          if (line.left < canvas.left || line.right > canvas.right || line.top < canvas.top || line.bottom > canvas.bottom) {
+            warnings.add('文字超出画布：' + text);
+          }
+          // Sample the baseline area along each line. The hit stack accounts for z-order.
+          const samples = Math.max(3, Math.ceil(line.width / 20));
+          for (let i = 0; i < samples; i++) {
+            const x = line.x + (i + 0.5) * line.width / samples;
+            const y = line.y + line.height/2;
+            if (covered(el, x, y)) {
+              warnings.add('前景遮住文字：' + text);
+              break;
+            }
+          }
+        }
+      }
+      const main = document.getElementById('main-sticker');
+      if (focus && main.checkVisibility() && main.naturalWidth) {
+        const space = imageSpace(main);
+        const relative = new DOMPoint((focus.x - 0.5) * space.width, (focus.y - 0.5) * space.height);
+        const offset = relative.matrixTransform(space.transform);
+        const x = space.centerX + offset.x;
+        const y = space.centerY + offset.y;
+        if (x < canvas.left || y < canvas.top || x >= canvas.right || y >= canvas.bottom) {
+          warnings.add('主图焦点超出画布');
+        } else if (covered(main, x, y)) {
+          warnings.add('主图焦点被前景遮挡');
+        }
+      }
+      return [...warnings];
+    }
+
+    window.finalizeLayout = async function finalizeLayout(data) {
+      const main = document.getElementById('main-sticker');
+      let composition = 'text';
+      if (data.assets?.main_sticker && main.naturalHeight) {
+        composition = main.naturalWidth / main.naturalHeight >= 1.2 ? 'landscape' : 'portrait';
+      }
+      document.getElementById('cover-canvas').dataset.composition = composition;
+      applySlots(data, composition);
+      const titleWidth = document.querySelector('.title-zone').clientWidth;
+      await document.fonts.ready;
+      const warnings = [];
+      for (const [name, base] of [['line1',185], ['line2',146]]) {
+        const el = document.getElementById('title-' + name);
+        const pill = getComputedStyle(el.parentElement);
+        const available = titleWidth - parseFloat(pill.paddingLeft) - parseFloat(pill.paddingRight);
+        const requested = data.design?.typography?.[name] ?? base;
+        fitText(el, available, requested, 56);
+        if (el.checkVisibility() && el.scrollWidth > available) warnings.push('标题超过分配宽度：' + el.textContent);
+      }
+      const resolvedSlots = {};
+      for (const [name, selector] of Object.entries(SLOT_SELECTORS)) {
+        const el = document.querySelector(selector);
+        if (el?.checkVisibility()) resolvedSlots[name] = bounds(el.getBoundingClientRect());
+      }
+      document.documentElement.classList.add('inspect-cover');
+      try {
+        warnings.push(...inspectComposition(data.assets?.main_sticker_style?.focus));
+        return {layout:{composition, resolvedSlots}, warnings};
+      } finally {
+        document.documentElement.classList.remove('inspect-cover');
+      }
+    };
+
+    function setTitle(line, value) {
+      const element = document.getElementById('title-line' + line);
+      element.closest('.brush-row').style.display = value ? '' : 'none';
+      element.replaceChildren();
+      // Tilt individual Han characters while keeping Latin runs shaped together.
+      for (const run of (value || '').match(/\p{Script=Han}|[^\p{Script=Han}]+/gu) || []) {
+        if (/\p{Script=Han}/u.test(run)) {
+          const glyph = document.createElement('span');
+          glyph.textContent = run;
+          element.appendChild(glyph);
+        } else {
+          element.append(run);
+        }
+      }
+    }
+
+    window.injectData = function injectData(data) {
+      document.getElementById('layout-slots').textContent = '';
+      const root = document.documentElement.style;
+      const [sun, sky, mint] = THEMES[data.theme_color] || THEMES.yellow;
+      root.setProperty('--sun', sun);
+      root.setProperty('--sky', sky);
+      root.setProperty('--mint', mint);
+      for (const [name, property] of Object.entries(TEXTURES)) {
+        const image = data.design?.textures?.[name];
+        if (image) root.setProperty(property, 'url(' + JSON.stringify(image) + ')');
+        else root.removeProperty(property);
+      }
+      setText('capsule-tag', data.tag);
+      setTitle(1, data.main_title_line1);
+      setTitle(2, data.main_title_line2);
+      setText('title-en-deco', data.title_en_deco);
+      setText('tip-text', data.side_note_tip);
+      setText('bubble-text', data.side_note_bubble);
+      setText('side-note-title', data.side_note_title);
+      setText('side-note-sub', data.side_note_sub);
+      setText('bottom-desc', data.title_sub);
+      document.querySelector('.note-header').style.display = data.side_note_title ? '' : 'none';
+
+      const list = document.getElementById('checklist');
+      list.replaceChildren();
+      for (const text of (data.checklist || []).slice(0, 4)) {
+        const item = document.createElement('li');
+        item.className = 'checklist-item';
+        const check = document.createElement('span');
+        check.className = 'check-icon';
+        check.setAttribute('aria-hidden', 'true');
+        const copy = document.createElement('span');
+        copy.className = 'check-text';
+        copy.textContent = text;
+        item.append(check, copy);
+        list.appendChild(item);
+      }
+
+      const main = document.getElementById('main-sticker');
+      if (data.assets?.main_sticker) {
+        main.style.display = '';
+        main.src = data.assets.main_sticker;
+        const st = data.assets.main_sticker_style || {};
+        main.style.transform = 'translate(' + (st.offsetX ?? 0) + 'px,' + (st.offsetY ?? 0) +
+          'px) scale(' + (st.scale ?? 1) + ') rotate(' + (st.rotate || '0deg') + ')';
+      } else {
+        main.removeAttribute('src');
+        main.style.display = 'none';
+      }
+      setStickers('absolute-stickers-container', data.assets?.stickers, {
+        className:'floating-sticker sticker-effect', top:'50%', left:'50%', size:150
+      });
+    };
+  </script>
+</body>
+</html>
