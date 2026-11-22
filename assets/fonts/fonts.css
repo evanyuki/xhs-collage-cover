@@ -1,0 +1,41 @@
+@font-face {
+  font-family: NotoSC;
+  src: url('noto-sans-sc-extrabold.woff2') format('woff2');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: NotoLatin;
+  src: url('noto-sans-latin-extrabold.woff2') format('woff2');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: WenKai;
+  src: url('wenkai.woff2') format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Caveat;
+  src: url('caveat.woff2') format('woff2');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Sacramento;
+  src: url('Sacramento-Regular.ttf') format('truetype');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Grandstander;
+  src: url('grandstander-800.woff2') format('woff2');
+  font-weight: 800;
+}
+
+@font-face {
+  font-family: Gaegu;
+  src: url('gaegu-700.woff2') format('woff2');
+  font-weight: 700;
+}
