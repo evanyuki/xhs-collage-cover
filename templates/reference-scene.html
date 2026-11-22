@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>参考图排版</title>
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    #cover-canvas {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
+      background-color: white;
+      --default-display: NotoLatin, NotoSC, 'Microsoft YaHei', WenKai, sans-serif;
+      --default-body: 'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', WenKai, sans-serif;
+      --default-hand: WenKai, 'Kaiti SC', KaiTi, serif;
+      --display: var(--default-display);
+      --body: var(--default-body);
+      --hand: var(--default-hand);
+    }
+    .scene-layer { position: absolute; display: block; }
+    .scene-text {
+      display: flex;
+      flex-direction: column;
+      overflow-wrap: anywhere;
+    }
+    .scene-copy {
+      flex: none;
+      width: 100%;
+      margin: 0;
+      paint-order: stroke fill;
+    }
+    .scene-list {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      overflow-wrap: anywhere;
+    }
+    .scene-row { display: grid; flex: none; align-items: start; }
+    .scene-row p { margin: 0; white-space: pre-wrap; }
+    .scene-label { min-width: 0; padding-right: 0.2em; }
+    .scene-row > div { min-width: 0; }
+  </style>
+</head>
+<body>
+  <main id="cover-canvas"></main>
+  <script src="reference-scene.js"></script>
+</body>
+</html>

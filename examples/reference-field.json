@@ -1,0 +1,458 @@
+{
+  "kind": "reference-source",
+  "schemaVersion": 1,
+  "references": {
+    "cover": {
+      "path": "../assets/references/city-cover.png",
+      "sha256": "507d624fd0130f3182d1fa5fcca03ca3a3a48a95e594eca5c5c1b7fb1ba4c5ba",
+      "observations": [
+        "青蓝方格占满全页，顶端的白色不规则纸块把两行黑色英文与右边的大号地名合成报头。",
+        "橙色微斜色带接在报头下面。主体是占下方大半画幅的双人行动插画，边缘用小装饰和绿色地面收束。",
+        "改为公园观察后，用新的双人观察场景承接题目；保留原参考中不带文字的热气球，重复作系列角标。"
+      ]
+    },
+    "inside": {
+      "path": "../assets/references/city-inside.png",
+      "sha256": "884f5a37ac06a1164c207efc98824c2f4bcc7aa7501d54ca7f0c3dfb48c071d9",
+      "observations": [
+        "内页沿用同一报头、蓝方格和顶部角标。奶油纸从报头下方延伸到草地，覆盖了原封面大插画所在的位置。",
+        "绿色小签引出三条行动；左栏是醒目的段序，右栏先写短标题再写解释。下半页的橙签切换成补充说明。",
+        "底角缩小插画，给正文留出中央空间。跨主题时保留分栏层级，将行程和费用改写为观察站和记录方法。"
+      ]
+    }
+  },
+  "design": {
+    "colors": {
+      "sky": {
+        "from": "cover",
+        "at": [0.0311, 0.0416]
+      },
+      "grid": {
+        "from": "cover",
+        "at": [0.0111, 0.0117]
+      },
+      "white": {
+        "from": "cover",
+        "at": [0.3244, 0.0516]
+      },
+      "black": {
+        "from": "cover",
+        "at": [0.2667, 0.1016]
+      },
+      "orange": {
+        "from": "cover",
+        "at": [0.2467, 0.2515]
+      },
+      "grass": {
+        "from": "cover",
+        "at": [0.3956, 0.9217]
+      },
+      "cream": {
+        "from": "inside",
+        "at": [0.5555, 0.3081]
+      },
+      "leaf": {
+        "from": "inside",
+        "at": [0.1667, 0.3597]
+      },
+      "lemon": "#fff28b",
+      "pollen": "#f38238",
+      "stem": "#377f49"
+    },
+    "shared": [
+      {
+        "id": "blue-grid",
+        "type": "shape",
+        "box": [0, 0, 1, 1],
+        "fill": "$sky",
+        "grid": 23,
+        "gridColor": "$grid"
+      },
+      {
+        "id": "torn-paper",
+        "type": "shape",
+        "box": [0.11333, 0.03913, 0.71667, 0.20566],
+        "fill": "$white",
+        "polygon": [
+          [0, 0.436],
+          [0.103, 0.308],
+          [0.112, 0.072],
+          [0.308, 0],
+          [0.552, 0.069],
+          [0.738, 0],
+          [0.801, 0.162],
+          [0.996, 0.216],
+          [1, 0.773],
+          [0.929, 1],
+          [0.565, 0.848],
+          [0.502, 0.923],
+          [0.075, 0.868]
+        ]
+      },
+      {
+        "id": "balloon",
+        "type": "image",
+        "box": [0.84, 0.03247, 0.11556, 0.10908],
+        "crop": {
+          "from": "cover",
+          "box": [0.84, 0.03247, 0.11556, 0.10908]
+        }
+      },
+      {
+        "id": "english-head",
+        "type": "text",
+        "box": [0.13, 0.05495, 0.36222, 0.15737],
+        "bind": "english",
+        "font": "display",
+        "fontSize": 98,
+        "minFontSize": 78,
+        "color": "$black",
+        "align": "right",
+        "lineHeight": 0.94,
+        "tracking": 1
+      },
+      {
+        "id": "place-head",
+        "type": "text",
+        "box": [0.50444, 0.04746, 0.3, 0.1657],
+        "bind": "place",
+        "font": "display",
+        "fontSize": 147,
+        "minFontSize": 117,
+        "color": "$black",
+        "align": "center",
+        "lineHeight": 1
+      },
+      {
+        "id": "orange-tape",
+        "type": "shape",
+        "box": [0.22333, 0.22981, 0.54889, 0.05495],
+        "fill": "$orange",
+        "rotate": -4
+      },
+      {
+        "id": "tape-text",
+        "type": "text",
+        "box": [0.23556, 0.23231, 0.52444, 0.04996],
+        "bind": "strap",
+        "fontSize": 40,
+        "minFontSize": 30,
+        "color": "$white",
+        "weight": 600,
+        "align": "center",
+        "lineHeight": 1.05,
+        "rotate": -4
+      },
+      {
+        "id": "lawn",
+        "type": "shape",
+        "box": [0, 0.86095, 1, 0.13905],
+        "fill": "$grass",
+        "polygon": [
+          [0, 0.8],
+          [0.074, 0.67],
+          [0.151, 0.56],
+          [0.23, 0.49],
+          [0.329, 0.425],
+          [0.419, 0.41],
+          [0.502, 0.423],
+          [0.57, 0.5],
+          [0.627, 0.54],
+          [0.665, 0.51],
+          [0.69, 0.455],
+          [0.707, 0.386],
+          [0.724, 0.312],
+          [0.746, 0.247],
+          [0.771, 0.204],
+          [0.792, 0.19],
+          [0.81, 0.194],
+          [0.831, 0.221],
+          [0.85, 0.262],
+          [0.865, 0.221],
+          [0.879, 0.169],
+          [0.889, 0.1],
+          [0.904, 0.038],
+          [0.923, 0],
+          [0.939, 0.01],
+          [0.955, 0.05],
+          [0.971, 0.109],
+          [0.985, 0.185],
+          [1, 0.31],
+          [1, 1],
+          [0, 1]
+        ]
+      },
+      {
+        "id": "flower-1-stem",
+        "type": "shape",
+        "box": [0.06444, 0.93172, 0.00556, 0.03247],
+        "fill": "$stem",
+        "rotate": -7
+      },
+      {
+        "id": "flower-1-1",
+        "type": "shape",
+        "box": [0.05728, 0.90995, 0.021, 0.01574],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-1-2",
+        "type": "shape",
+        "box": [0.06964, 0.91668, 0.021, 0.01574],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-1-3",
+        "type": "shape",
+        "box": [0.06492, 0.92757, 0.021, 0.01574],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-1-4",
+        "type": "shape",
+        "box": [0.04964, 0.92757, 0.021, 0.01574],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-1-5",
+        "type": "shape",
+        "box": [0.04491, 0.91668, 0.021, 0.01574],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-1-center",
+        "type": "shape",
+        "box": [0.06294, 0.92394, 0.00967, 0.00724],
+        "fill": "$pollen",
+        "radius": 35
+      },
+      {
+        "id": "flower-2-stem",
+        "type": "shape",
+        "box": [0.85444, 0.9567, 0.00556, 0.02381],
+        "fill": "$stem",
+        "rotate": -7
+      },
+      {
+        "id": "flower-2-1",
+        "type": "shape",
+        "box": [0.85008, 0.93963, 0.0154, 0.01154],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-2-2",
+        "type": "shape",
+        "box": [0.85914, 0.94456, 0.0154, 0.01154],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-2-3",
+        "type": "shape",
+        "box": [0.85568, 0.95255, 0.0154, 0.01154],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-2-4",
+        "type": "shape",
+        "box": [0.84447, 0.95255, 0.0154, 0.01154],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-2-5",
+        "type": "shape",
+        "box": [0.84101, 0.94456, 0.0154, 0.01154],
+        "fill": "$lemon",
+        "radius": 35
+      },
+      {
+        "id": "flower-2-center",
+        "type": "shape",
+        "box": [0.85423, 0.94988, 0.00709, 0.00531],
+        "fill": "$pollen",
+        "radius": 35
+      }
+    ],
+    "cover": [
+      "blue-grid",
+      "lawn",
+      {
+        "id": "observers",
+        "type": "image",
+        "box": [0.00889, 0.27977, 0.98222, 0.70192],
+        "assetBind": "observers"
+      },
+      "flower-1-stem",
+      "flower-1-1",
+      "flower-1-2",
+      "flower-1-3",
+      "flower-1-4",
+      "flower-1-5",
+      "flower-1-center",
+      "flower-2-stem",
+      "flower-2-1",
+      "flower-2-2",
+      "flower-2-3",
+      "flower-2-4",
+      "flower-2-5",
+      "flower-2-center",
+      "torn-paper",
+      "balloon",
+      "english-head",
+      "place-head",
+      "orange-tape",
+      "tape-text"
+    ],
+    "inside": [
+      "blue-grid",
+      {
+        "id": "notes-paper",
+        "type": "shape",
+        "box": [0.06444, 0.24313, 0.87, 0.71191],
+        "fill": "$cream",
+        "polygon": [
+          [0.062, 0.014],
+          [0.946, 0],
+          [0.996, 0.042],
+          [1, 0.619],
+          [0.986, 0.907],
+          [0.919, 0.98],
+          [0.071, 1],
+          [0.014, 1],
+          [0, 0.61],
+          [0.018, 0.446]
+        ]
+      },
+      "lawn",
+      {
+        "id": "observers-small",
+        "type": "image",
+        "box": [0.54889, 0.70525, 0.44444, 0.29142],
+        "assetBind": "observers"
+      },
+      "flower-1-stem",
+      "flower-1-1",
+      "flower-1-2",
+      "flower-1-3",
+      "flower-1-4",
+      "flower-1-5",
+      "flower-1-center",
+      "flower-2-stem",
+      "flower-2-1",
+      "flower-2-2",
+      "flower-2-3",
+      "flower-2-4",
+      "flower-2-5",
+      "flower-2-center",
+      "torn-paper",
+      "balloon",
+      "english-head",
+      "place-head",
+      "orange-tape",
+      "tape-text",
+      {
+        "id": "section-tab",
+        "type": "shape",
+        "box": [0.04667, 0.3189, 0.24222, 0.05246],
+        "fill": "$leaf"
+      },
+      {
+        "id": "section-title",
+        "type": "text",
+        "box": [0.05667, 0.32057, 0.22222, 0.04913],
+        "bind": "section",
+        "font": "display",
+        "fontSize": 37,
+        "minFontSize": 28,
+        "color": "$white",
+        "align": "center",
+        "lineHeight": 1
+      },
+      {
+        "id": "observation-stations",
+        "type": "list",
+        "box": [0.14444, 0.38301, 0.72222, 0.28226],
+        "bind": "stops",
+        "titleSize": 30,
+        "bodySize": 24,
+        "labelSize": 33,
+        "labelWidth": 80,
+        "gap": 17,
+        "lineGap": 5,
+        "lineHeight": 1.19,
+        "labelColor": "$black",
+        "titleColor": "$black",
+        "bodyColor": "$black"
+      },
+      {
+        "id": "notes-tab",
+        "type": "shape",
+        "box": [0.04667, 0.67027, 0.28556, 0.05162],
+        "fill": "$orange"
+      },
+      {
+        "id": "notes-title",
+        "type": "text",
+        "box": [0.05889, 0.67194, 0.26111, 0.04829],
+        "bind": "notesHeading",
+        "font": "display",
+        "fontSize": 35,
+        "minFontSize": 27,
+        "color": "$white",
+        "align": "center",
+        "lineHeight": 1
+      },
+      {
+        "id": "notes-body",
+        "type": "text",
+        "box": [0.16333, 0.74105, 0.42778, 0.14155],
+        "bind": "notes",
+        "fontSize": 25,
+        "minFontSize": 20,
+        "color": "$black",
+        "valign": "top",
+        "lineHeight": 1.42
+      }
+    ]
+  },
+  "content": {
+    "cover": {
+      "english": "FIELD\nNOTES",
+      "place": "公园",
+      "strap": "去公园，做一次自然观察",
+      "observers": "assets/reference-art/field-hero.png"
+    },
+    "sections": [
+      {
+        "section": "三站观察",
+        "notesHeading": "带走一页记录",
+        "notes": "写下日期、地点和天气。\n挑一个最小的发现画下来，在旁边标出你亲眼看到的细节。",
+        "stops": [
+          {
+            "label": "01",
+            "title": "从树下开始",
+            "body": "找一棵低枝的树，从枝尖往回看。记下芽的位置、颜色和朝向。"
+          },
+          {
+            "label": "02",
+            "title": "在草地边停一分钟",
+            "body": "站在步道上听一会儿，把最近和最远的两种声音各写成一个词。"
+          },
+          {
+            "label": "03",
+            "title": "沿同一条路返回",
+            "body": "再看一次来时留意的地方，补画一个刚才漏掉的细节。"
+          }
+        ]
+      }
+    ]
+  }
+}
