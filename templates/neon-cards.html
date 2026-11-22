@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1242, initial-scale=1">
+  <title>荧光字卡套图</title>
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <link rel="stylesheet" href="neon-cards-inside.css">
+  <style>
+    :root {
+      --blue: #196be6;
+      --pink: #ff69ce;
+      --yellow: #fff400;
+      --mint: #06f5bd;
+      --ink: #101012;
+      --display-font: NotoSC, NotoLatin, 'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', WenKai, sans-serif;
+      --body-font: 'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', WenKai, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    #cover-canvas {
+      position: relative;
+      isolation: isolate;
+      width: 1242px;
+      height: 1660px;
+      overflow: hidden;
+      background: var(--blue);
+      color: var(--ink);
+      font-family: var(--body-font);
+    }
+    #cover-canvas::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: var(--printed-grain);
+      pointer-events: none;
+    }
+    #sheet-content, .set-cover-tiles, .set-cover-marks {
+      position: absolute;
+      inset: 0;
+      margin: 0;
+    }
+    .set-cover-marks { width: 100%; height: 100%; pointer-events: none; }
+    .set-cover-frame {
+      position: absolute;
+      border: 6px solid var(--ink);
+      border-radius: 3px;
+      background: var(--yellow);
+    }
+    .set-cover-frame:nth-child(1) { left: 88px; top: 313px; width: 559px; height: 533px; }
+    .set-cover-frame:nth-child(2) { left: 617px; top: 237px; width: 568px; height: 568px; }
+    .set-cover-frame:nth-child(3) {
+      left: 82px; top: 798px; width: 534px; height: 533px; transform: rotate(9deg);
+    }
+    .set-cover-frame:nth-child(4) {
+      left: 620px; top: 771px; width: 556px; height: 552px; transform: rotate(-5.5deg);
+    }
+    .set-cover-frame canvas, .set-cover-circle { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .set-cover-circle { color: var(--pink); }
+    .set-cover-label {
+      position: absolute;
+      border: 6px solid var(--ink);
+      font: 800 50px/1 var(--display-font);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .18em;
+      white-space: nowrap;
+    }
+    .set-cover-label > span { flex: none; }
+    .set-cover-audience {
+      left: 50%; top: 80px;
+      width: max-content; min-width: 718px; max-width: 1010px; height: 101px;
+      transform: translateX(-50%);
+      padding: 0 54px;
+      border-radius: 100px;
+      background: var(--pink); color: #fff;
+    }
+    .set-cover-kicker {
+      left: 36px; top: 260px;
+      width: max-content; min-width: 230px; max-width: 592px; height: 82px;
+      border-radius: 3px;
+      transform: rotate(-6deg);
+      padding: 0 40px;
+      background: var(--mint);
+    }
+    .set-cover-ribbon { height: 106px; border-radius: 2px; }
+    .set-cover-ribbon.first {
+      left: -32px; top: 1464px; width: 838px;
+      transform: rotate(-5.6deg); transform-origin: left center;
+      padding: 0 38px 0 69px; background: var(--mint);
+    }
+    .set-cover-ribbon.second {
+      right: -36px; top: 1434px; width: 906px;
+      transform: rotate(-5.6deg); transform-origin: right center;
+      padding: 0 73px 0 35px; background: var(--pink);
+    }
+    .set-cover-ribbon.first::after {
+      content: ''; position: absolute; right: -19px; top: -28px;
+      width: 58px; height: 61px; border-radius: 54% 47% 48% 52%; background: var(--pink);
+    }
+    .set-cover-label[hidden] { display: none; }
+  </style>
+</head>
+<body>
+  <main id="cover-canvas"><div id="sheet-content"></div></main>
+  <template id="set-cover-template">
+    <h1 class="set-cover-tiles"></h1>
+    <div class="set-cover-label set-cover-audience"></div>
+    <div class="set-cover-label set-cover-kicker"></div>
+    <svg class="set-cover-marks" viewBox="0 0 1242 1660" fill="none" stroke-linecap="round"
+         stroke-linejoin="round" aria-hidden="true">
+      <path d="M83 126c-3-18 7-29 23-29 19 0 34 12 35 27 1 17-14 32-31 32-16 0-24-13-27-30Z"
+            stroke="#29fff1" stroke-width="12"/>
+      <path d="m1103 76 68-10m-50-17 30 43m-46 20 42-62m-12-5 8 62"
+            stroke="var(--yellow)" stroke-width="4"/>
+      <path d="m1028 247 28-68c1-3 3-4 5 2l18 59 74-33-29 62 44-4-19 42"
+            stroke="var(--pink)" stroke-width="13"/>
+      <path d="m92 1376 75-12m-55-35 52 60m-71-11 82-18m-44 52 18-77m-34 56 59-37"
+            stroke="#fffdf8" stroke-width="5"/>
+      <path d="M1128 1398c-8-32 30-39 42-16 14 25-31 50-42 16Z"
+            stroke="#b1d2ff" stroke-width="4"/>
+      <path d="m1157 1642 42 29m-33-46 19 45m9-42-16 46m-22-12 57-24"
+            stroke="#fffdf8" stroke-width="5"/>
+    </svg>
+    <div class="set-cover-label set-cover-ribbon first"></div>
+    <div class="set-cover-label set-cover-ribbon second"></div>
+  </template>
+  <template id="set-cover-ring">
+    <svg class="set-cover-circle" viewBox="0 0 100 100" aria-hidden="true">
+      <path d="M49 9C72 6 90 21 94 45 99 68 85 87 62 92 35 99 14 85 8 63 1 39 12 18 34 11 41 8 46 9 51 8"
+            stroke="currentColor" fill="none" stroke-width="8" stroke-linecap="round"/>
+    </svg>
+  </template>
+  <script src="shared.js"></script>
+  <script src="neon-cards-cover.js"></script>
+  <script src="neon-cards-inside.js"></script>
+</body>
+</html>

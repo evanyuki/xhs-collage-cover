@@ -1,0 +1,176 @@
+.inside-paper {
+  position: absolute;
+  inset: 147px 74px 83px 63px;
+  border: 6px solid var(--ink);
+  border-radius: 45px;
+  background-color: #fffefa;
+  background-image: linear-gradient(90deg, rgb(67 79 93 / 8%) 2px, transparent 2px),
+                    linear-gradient(rgb(67 79 93 / 8%) 2px, transparent 2px);
+  background-position: 1px 11px;
+  background-size: 32px 32px;
+}
+
+.inside-heading {
+  position: absolute;
+  z-index: 1;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 21px;
+  width: max-content;
+  max-width: 1030px;
+  min-height: 128px;
+  margin: 0;
+  padding: 12px 25px 16px;
+  border: 6px solid var(--ink);
+  border-radius: 32px;
+  background: var(--pink);
+  color: #fff;
+  font: 800 72px/1.14 var(--display-font);
+  text-align: center;
+}
+
+.inside-heading::before,
+.inside-heading::after {
+  content: '';
+  flex: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.inside-heading span {
+  min-width: 0;
+  white-space: pre;
+  overflow-wrap: anywhere;
+}
+
+.inside-list {
+  position: absolute;
+  inset: 114px 0 42px -6px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.inside-entry {
+  flex: none;
+  min-width: 0;
+}
+
+.inside-label {
+  display: flex;
+  align-items: stretch;
+  width: fit-content;
+  max-width: calc(100% - 76px);
+  margin: 0;
+  border: 6px solid var(--ink);
+  border-radius: 0 4px 4px 0;
+  background: var(--yellow);
+  color: var(--ink);
+  font: 800 49px/1.18 var(--display-font);
+}
+
+.inside-number {
+  flex: none;
+  display: grid;
+  place-items: center;
+  min-width: 66px;
+  padding: 0 10px;
+  border-right: 6px solid var(--ink);
+  background: var(--mint);
+  font: 600 53px/1 var(--body-font);
+  font-variant-numeric: tabular-nums;
+}
+
+.inside-label-text {
+  min-width: 0;
+  padding: 0 32px 2px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.inside-copy {
+  margin: 31px 83px 0 82px;
+  color: #30251f;
+  font: 400 42px/1.38 var(--body-font);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.inside-list[data-type-size="medium"] .inside-copy {
+  margin-top: 38px;
+  font-size: 46px;
+  line-height: 1.45;
+}
+
+.inside-list[data-type-size="large"] .inside-copy {
+  margin-top: 44px;
+  font-size: 51px;
+  line-height: 1.48;
+}
+
+.inside-marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.inside-ring {
+  position: absolute;
+  left: 29px;
+  top: 36px;
+  width: 71px;
+  height: 74px;
+  transform: rotate(19deg);
+  border: 13px solid #32f9e3;
+  border-radius: 51% 45% 53% 43%;
+}
+
+.inside-lightning {
+  position: absolute;
+  top: 23px;
+  right: 109px;
+  width: 96px;
+  height: 96px;
+  background: var(--yellow);
+  clip-path: polygon(0 43%, 29% 0, 36% 2%, 40% 42%, 92% 31%, 96% 37%,
+                     76% 66%, 98% 71%, 100% 77%, 79% 100%, 73% 95%, 88% 78%,
+                     62% 72%, 63% 65%, 80% 41%, 34% 52%, 31% 47%, 27% 15%, 7% 48%);
+}
+
+.inside-spark {
+  position: absolute;
+  width: 92px;
+  height: 98px;
+  background: #fffefa;
+  clip-path: polygon(46% 0, 52% 0, 55% 37%, 77% 9%, 81% 12%, 65% 43%,
+                     98% 32%, 100% 37%, 66% 53%, 94% 63%, 92% 68%, 59% 60%,
+                     66% 98%, 60% 100%, 49% 66%, 30% 93%, 26% 89%, 40% 59%,
+                     2% 67%, 0 61%, 37% 48%, 9% 28%, 12% 23%, 45% 41%);
+}
+
+.inside-spark.left { left: -46px; bottom: 154px; transform: rotate(12deg); }
+.inside-spark.right { right: -48px; top: 790px; transform: rotate(-21deg); }
+
+.inside-star {
+  position: absolute;
+  right: 26px;
+  bottom: 23px;
+  width: 139px;
+  height: 137px;
+  transform: rotate(-11deg);
+  background-color: var(--pink);
+  background-image: repeating-linear-gradient(65deg, transparent 0 25px, #fface2 26px 30px),
+                    repeating-linear-gradient(126deg, transparent 0 29px, #fface2 30px 35px);
+  clip-path: polygon(0 54%, 23% 44%, 20% 13%, 40% 25%, 52% 0, 60% 30%,
+                     100% 18%, 76% 47%, 93% 73%, 66% 69%, 61% 97%, 45% 76%,
+                     21% 100%, 27% 67%, 0 62%);
+}
