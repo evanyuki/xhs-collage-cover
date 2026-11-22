@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=1242, initial-scale=1">
+  <title>纸页手记</title>
+  <link rel="stylesheet" href="../assets/fonts/fonts.css">
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --paper: #fbf7ee;
+      --ink: #272725;
+      --blue: #c0d4e8;
+      --tape: #9fb8d9;
+    }
+    html, body { margin: 0; width: 1242px; height: 1660px; }
+    #cover-canvas {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 25% 38%, #fffaf300, #efe0ca26), var(--paper);
+      color: var(--ink);
+      font: 400 50px/1 Gaegu, WenKai, sans-serif;
+      font-synthesis: none;
+      isolation: isolate;
+    }
+    #cover-canvas::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      filter: url(#grain);
+      opacity: .045;
+      mix-blend-mode: multiply;
+    }
+    .pencil { filter: url(#pencil); }
+    .heading {
+      position: absolute;
+      top: 164px;
+      left: 132px;
+      width: 750px;
+      transform-origin: 0 0;
+      transform: rotate(-4deg);
+    }
+    .title-line {
+      margin: 0;
+      width: max-content;
+      white-space: pre;
+      font: 400 205px/.93 Grandstander, WenKai, sans-serif;
+      letter-spacing: 3px;
+    }
+    .title-line .outlined {
+      color: var(--blue);
+      -webkit-text-stroke: 10px var(--ink);
+      paint-order: stroke fill;
+    }
+    #title-line2 { margin-left: 12px; }
+    .title-line span { display: inline-block; }
+    .title-line span:nth-child(3n+1) { transform: rotate(-3deg); }
+    .title-line span:nth-child(3n+2) { transform: rotate(2deg) translateY(.017em); }
+    .subtitle {
+      position: absolute;
+      top: 568px;
+      left: 184px;
+      transform: rotate(-4deg);
+      transform-origin: 0 0;
+      font-size: 59px;
+      line-height: .98;
+      letter-spacing: -.8px;
+    }
+    .subtitle div { width: max-content; white-space: pre; }
+    #subtitle-line2 { margin-left: 6px; }
+    .subtitle::after {
+      content: '';
+      display: block;
+      width: 83%;
+      max-width: 390px;
+      height: 9px;
+      margin: 23px 0 0 11%;
+      border-radius: 80% 35% 55% 20%;
+      background: var(--tape);
+      transform: rotate(-3deg);
+      filter: url(#pencil);
+    }
+    #top-doodle {
+      position: absolute;
+      right: 51px;
+      top: 331px;
+      width: 330px;
+      height: 258px;
+      object-fit: contain;
+      transform: rotate(7deg);
+    }
+    .frame {
+      position: absolute;
+      left: 604px;
+      top: 725px;
+      width: 486px;
+      height: 775px;
+      margin: 0;
+      padding: 29px 29px 34px;
+      transform: rotate(13.5deg);
+      background: #fffdf7;
+    }
+    .frame::before, .frame::after {
+      position: absolute;
+      content: '';
+      pointer-events: none;
+      border: 5px solid var(--ink);
+      filter: url(#pencil);
+    }
+    .frame::before { inset: 1px; border-radius: 3px 1px 4px 1px; }
+    .frame::after { inset: 27px 27px 32px; border-width: 3px; }
+    #main-illustration { display: block; width: 100%; height: 100%; object-fit: cover; }
+    .tape {
+      position: absolute;
+      z-index: 1;
+      left: 84px;
+      top: -49px;
+      width: 201px;
+      height: 81px;
+      transform: rotate(-62deg);
+      filter: url(#pencil);
+    }
+    .tape, .tape::before {
+      clip-path: polygon(0 3%, 100% 0, 97% 15%, 100% 27%, 97% 41%, 100% 53%, 97% 67%, 100% 82%, 97% 98%, 0 100%, 3% 84%, 0 70%, 3% 57%, 0 43%, 3% 29%, 0 16%);
+      background: var(--ink);
+    }
+    .tape::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      background-color: #f5f2e8;
+      background-image: repeating-linear-gradient(0deg, transparent 0 15px, color-mix(in srgb, var(--tape) 63%, transparent) 15px 30px),
+                        repeating-linear-gradient(90deg, transparent 0 15px, color-mix(in srgb, var(--tape) 68%, transparent) 15px 30px);
+    }
+    .quote {
+      position: absolute;
+      left: 143px;
+      top: 1178px;
+      width: 315px;
+      height: 229px;
+      transform: rotate(-2deg);
+    }
+    .quote-paper {
+      position: absolute;
+      inset: 0;
+      filter: url(#pencil);
+    }
+    .quote-paper::before, .quote-paper::after {
+      position: absolute;
+      content: '';
+      inset: 0;
+      clip-path: polygon(0 3%, 85% 0, 87% 62%, 100% 64%, 87% 76%, 87% 98%, 2% 100%);
+      background: var(--ink);
+    }
+    .quote-paper::after { inset: 5px; background: color-mix(in srgb, var(--blue) 76%, white); }
+    #quote-text {
+      position: absolute;
+      left: 27px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 221px;
+      margin: 0;
+      font-size: 49px;
+      line-height: 1.04;
+      white-space: pre-line;
+      overflow-wrap: anywhere;
+    }
+    .quote-marks {
+      position: absolute;
+      top: -56px;
+      left: 246px;
+      height: 48px;
+      width: 9px;
+      border: 3px solid var(--ink);
+      background: var(--tape);
+      transform: rotate(27deg);
+    }
+    .quote-marks::before, .quote-marks::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 38px;
+      border: 3px solid var(--ink);
+      background: var(--tape);
+      transform: rotate(32deg);
+      left: 47px;
+      top: 12px;
+    }
+    .quote-marks::after { transform: rotate(51deg); left: 76px; top: 50px; height: 32px; }
+    .star { position: absolute; right: -11px; bottom: -81px; width: 126px; height: 121px; transform: rotate(14deg); filter: url(#pencil); }
+    .star::before, .star::after {
+      position: absolute;
+      inset: 0;
+      content: '';
+      background: var(--ink);
+      clip-path: polygon(50% 0, 62% 36%, 100% 32%, 72% 58%, 84% 98%, 50% 76%, 16% 100%, 28% 58%, 0 35%, 37% 36%);
+    }
+    .star::after { inset: 8px; background: var(--tape); }
+    #corner-tag {
+      position: absolute; right: 66px; top: 63px;
+      font-size: 39px; transform: rotate(3deg);
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <filter id="pencil" x="-8%" y="-12%" width="116%" height="124%">
+        <feTurbulence type="fractalNoise" baseFrequency=".25" numOctaves="3" seed="18" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".48" numOctaves="3" stitchTiles="stitch"/></filter>
+    </defs>
+  </svg>
+  <main id="cover-canvas">
+    <header class="heading pencil">
+      <h1 class="title-line" id="title-line1"></h1>
+      <div class="title-line" id="title-line2"></div>
+    </header>
+    <div class="subtitle" id="subtitle">
+      <div id="subtitle-line1"></div>
+      <div id="subtitle-line2"></div>
+    </div>
+    <img id="top-doodle" alt="">
+    <figure class="frame">
+      <img id="main-illustration" alt="手帐照片">
+      <i class="tape" aria-hidden="true"></i>
+    </figure>
+    <aside class="quote" id="quote">
+      <div class="quote-paper" aria-hidden="true"></div>
+      <i class="quote-marks pencil" aria-hidden="true"></i>
+      <i class="star" aria-hidden="true"></i>
+      <p id="quote-text"></p>
+    </aside>
+    <div id="corner-tag"></div>
+  </main>
+  <script src="shared.js"></script>
+  <script>
+    const palettes = {
+      mist_blue: ['#fbf7ee', '#bfd0e5', '#a7bfdf'],
+      sage_green: ['#f8f8ee', '#bed4bf', '#a0ba9c'],
+      peach_milk: ['#fcf5ed', '#f1cabe', '#d9afa0'],
+      butter_yellow: ['#fcf9ed', '#f3daa8', '#dac28e'],
+      lilac_mist: ['#faf6f6', '#d4c9e5', '#b8a9ce']
+    };
+
+    function lettering(id, text) {
+      setText(id, text);
+      const el = document.getElementById(id);
+      const letters = Array.from(el.textContent, char => {
+        const span = document.createElement('span');
+        span.textContent = char;
+        // Outline only the printable ASCII glyphs supplied by Grandstander.
+        if (/^[!-~]$/.test(char)) span.className = 'outlined';
+        return span;
+      });
+      el.replaceChildren(...letters);
+    }
+
+    window.injectData = data => {
+      const [paper, blue, tape] = palettes[data.theme_color] || palettes.mist_blue;
+      const style = document.documentElement.style;
+      style.setProperty('--paper', paper);
+      style.setProperty('--blue', blue);
+      style.setProperty('--tape', tape);
+      lettering('title-line1', data.main_title_line1);
+      lettering('title-line2', data.main_title_line2);
+      setText('subtitle-line1', data.subtitle_line1);
+      setText('subtitle-line2', data.subtitle_line2);
+      document.getElementById('subtitle').hidden = !data.subtitle_line1 && !data.subtitle_line2;
+      setText('corner-tag', data.tag);
+      setText('quote-text', data.note_quote);
+      document.getElementById('quote').hidden = !data.note_quote;
+      document.getElementById('main-illustration').src = data.assets?.main_illustration || '../assets/study/sunlit-desk.webp';
+      const doodle = document.getElementById('top-doodle');
+      if (data.assets?.top_doodle === '') {
+        doodle.removeAttribute('src');
+        doodle.style.display = 'none';
+      } else {
+        doodle.src = data.assets?.top_doodle || '../assets/study/open-book.webp';
+        doodle.style.display = '';
+      }
+    };
+
+    window.finalizeLayout = () => {
+      for (const el of document.querySelectorAll('.title-line')) fitText(el, 795, 205, 60);
+      for (const el of document.querySelectorAll('.subtitle div')) fitText(el, 655, 59, 31);
+      const quote = document.getElementById('quote-text');
+      quote.style.fontSize = '';
+      for (let size = 49; quote.scrollHeight > 195 && size > 26; size -= 2) quote.style.fontSize = (size - 2) + 'px';
+    };
+  </script>
+</body>
+</html>
